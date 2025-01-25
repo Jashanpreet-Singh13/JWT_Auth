@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Register</title>
+</head>
+<body>
+    <form id="form">
+        <h3>Username</h3>
+        <input id="username" type="text" required>
+        <h3>Email</h3>
+        <input id="email" type="email" required>
+        <h3>Password</h3>
+        <input id="password" type="password" required> 
+        <h3>Already Registered: <a href="/login">Login</a></h3>
+        <button type="submit">Create Account</button>
+    </form>
+
+
+    <script>
+        document.querySelector('#form').addEventListener('submit', async (e) => {
+            e.preventDefault();
+
+            const username = document.getElementById('username').value;
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+
+            const response = await fetch("/register", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({username, email, password})
+            })
+
+            const data = await response.json();
+
+            if(response.ok) {
+                document.getElementById('username').value = "";
+                document.getElementById('email').value = "";
+                document.getElementById('password').value = "";
+                alert(data.msg);
+                window.location.href = "/login";
+            } else {
+                alert(data.msg);
+            }
+
+        })
+    </script>
+</body>
+</html>

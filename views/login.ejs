@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login</title>
+</head>
+<body>
+    <form id="form">
+        <h3>Email</h3>
+        <input id="email" type="email" required>
+        <h3>Password</h3>
+        <input id="password" type="password" required> 
+        <h3>Not Registered: <a href="/register">Register</a></h3>
+        <button type="submit">Login</button>
+    </form>
+
+
+    <script>
+        document.querySelector('#form').addEventListener('submit', async (e) => {
+            e.preventDefault();
+
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+
+            const response = await fetch("/login", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({email, password})
+            })
+
+            const data = await response.json();
+
+            if(response.ok) {
+                document.getElementById('email').value = "";
+                document.getElementById('password').value = "";
+                alert(data.msg);
+                window.location.href = '/'
+            } else {
+                alert(data.msg);
+            }
+
+        })
+    </script>
+</body>
+</html>
